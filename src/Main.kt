@@ -1,14 +1,23 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+    val chocChipCookies = Recipe ("Chocolate Chip Cookies", 24)
+
+    val butter = Ingredient("Butter", 2.0, "cups")
+    val sugar = Ingredient("White sugar", .75, "cup")
+    val bSugar = Ingredient("Brown sugar", .75, "cup")
+    val eggs = Ingredient("Eggs", 2.0)
+    val extract = Ingredient("Maple extract", 1.0, "tsp")
+    val soda = Ingredient("Baking Soda", 1.0, "tsp")
+    val salt = Ingredient("Salt", 0.5, "tsp")
+    val flour = Ingredient("Flour", 2.75,"cups")
+    val chips = Ingredient("Semi-sweet chocolate chips", 12.0, "oz")
+    var ingredientsList= mutableListOf<Ingredient>(butter, sugar, bSugar, eggs, extract, soda, salt, flour, chips)
+    chocChipCookies.ingredients.addAll(ingredientsList)
+
+    chocChipCookies.removeIngredient("Cinnamon")
+    for (ingredient in chocChipCookies.ingredients) {
+        println(ingredient.name)
     }
+
+
 }
