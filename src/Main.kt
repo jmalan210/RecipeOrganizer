@@ -2,6 +2,13 @@ fun main() {
 
     val chocChipCookies = Recipe ("Chocolate Chip Cookies", 24)
 
+    println(chocChipCookies.title)
+    println("======================")
+    println("Servings: ${chocChipCookies.servings}")
+
+    chocChipCookies.description = "Soft, chewy, classic, and delicious!"
+    println(chocChipCookies.description)
+
     val butter = Ingredient("Butter, softened", 2.0, "cups")
     val sugar = Ingredient("White sugar", .75, "cup")
     val bSugar = Ingredient("Brown sugar", .75, "cup")
@@ -11,7 +18,7 @@ fun main() {
     val salt = Ingredient("Salt", 0.5, "tsp")
     val flour = Ingredient("Flour", 2.75,"cups")
     val chips = Ingredient("Semi-sweet chocolate chips", 12.0, "oz")
-    var ingredientsList= mutableListOf<Ingredient>(butter, sugar, bSugar, eggs, extract, soda, salt, flour, chips)
+    val ingredientsList= mutableListOf<Ingredient>(butter, sugar, bSugar, eggs, extract, soda, salt, flour, chips)
     chocChipCookies.ingredients.addAll(ingredientsList)
 
 //    chocChipCookies.removeIngredient("Cinnamon")
@@ -24,7 +31,7 @@ fun main() {
     val stir = Instruction("Stir in chocolate chips.")
     val bake = Instruction("Place 2-Tbsp scoops on cookie sheet and bake for 10-12 minutes.")
     val cool = Instruction("Allow to cool on cookie sheet for 5-10 minutes until set.")
-    var instructionsList = mutableListOf<Instruction>(preheat, wet, dry, stir, bake, cool)
+    val instructionsList = mutableListOf<Instruction>(preheat, wet, dry, stir, bake, cool)
     chocChipCookies.instructions.addAll(instructionsList)
 
 //    chocChipCookies.removeInstruction(2)
