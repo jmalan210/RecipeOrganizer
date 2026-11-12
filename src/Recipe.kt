@@ -46,6 +46,7 @@ class Recipe(var title: String, var servings: Int, var ingredients: MutableList<
         }
     }
 
+    //removes a found tag from the tags list
     fun removeTag(tag: String) {
         var deletedTag: String? = null
         for (existingTag in tags) {
