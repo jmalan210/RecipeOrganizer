@@ -36,5 +36,28 @@ class Recipe(var title: String, var servings: Int, var ingredients: MutableList<
     }
     }
 
+    //checks tag list for dupes and adds a unique capitalized tag to the tags list
+    fun addTag(tag: String) {
+        val lcTag :String = tag.lowercase()
+
+        val correctedTag: String = lcTag.replaceFirstChar { it.uppercase() }
+        if (correctedTag !in tags) {
+            tags.add(correctedTag)
+        }
+    }
+
+    fun removeTag(tag: String) {
+        var deletedTag: String? = null
+        for (existingTag in tags) {
+            if (existingTag.equals(tag, true)) {
+                deletedTag = existingTag
+                break
+            }
+        }
+
+        if (deletedTag != null) {
+            tags.remove(deletedTag)
+        }
+    }
 
     }
