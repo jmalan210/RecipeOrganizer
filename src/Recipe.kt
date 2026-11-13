@@ -1,11 +1,10 @@
-
 class Recipe(var title: String, var servings: Int, var ingredients: MutableList<Ingredient> = mutableListOf(), var instructions: MutableList<Instruction> = mutableListOf()) {
     var description: String = ""
-    var totalTime: Int = 0
+    var totalTime: Int = 0 //measured in whole minutes
     var tags: MutableList<Tag> = mutableListOf()
 
     //edits Recipe title
-    fun editTitle(recipe: Recipe) {
+    fun editTitle() {
 
             println("Please enter your updated recipe title: ")
             var editedTitle = readln()
@@ -13,11 +12,68 @@ class Recipe(var title: String, var servings: Int, var ingredients: MutableList<
                 println("Response blank. Please enter your updated title: ")
                 editedTitle = readln()
             }
-            recipe.title = editedTitle
+            title = editedTitle
             println("Title successfully changed!")
-            println(recipe.title)
+            println(title)
         }
 
+    //edits Recipe description
+    fun editDescription() {
+        println("Please enter your updated recipe description: ")
+        var editedDesc = readln()
+        while (editedDesc.isBlank()) {
+            println("Response blank. Please enter your updated description: ")
+            editedDesc= readln()
+        }
+        description = editedDesc
+        println("Description successfully changed!")
+        println(description)
+    }
+
+    //edits Recipe servings
+    fun editServings() {
+        println("Please enter your updated recipe servings as a whole number: ")
+        var editedServings = readln().toIntOrNull()
+
+        while (editedServings == null || editedServings <= 0) {
+            println("Invalid input. Please enter a whole number greater than 0: ")
+            editedServings = readln().toIntOrNull()
+        }
+
+            servings = editedServings!!
+            println("Servings updated successfully")
+            println(servings)
+
+    }
+
+    //edits Recipe servings
+    fun editTotalTime() {
+        println("Please enter your updated time as a whole number: ")
+        var editedTime = readln().toIntOrNull()
+
+        while (editedTime == null || editedTime <= 0) {
+            println("Invalid input. Please enter a whole number greater than 0: ")
+            editedTime = readln().toIntOrNull()
+        }
+
+        totalTime = editedTime!!
+        println("Time updated successfully")
+        println(totalTime)
+
+    }
+    //converts minutes into hour(s) and minute(s) and accounts for plural and whole hour conditions
+    fun convertTotalTime(): String {
+        if (totalTime >= 60) {
+            var convertedTime = totalTime / 60
+            var remainingTime = totalTime % 60
+            if ( remainingTime == 0) {
+                return "${convertedTime} ${if (convertedTime > 1) "hours" else "hour"}"
+            }else return "${convertedTime} ${if (convertedTime > 1) "hours" else "hour"} " +  "${remainingTime} ${if (remainingTime > 1) "minutes" else "minute"}"
+
+        } else
+            return "${totalTime} ${if (totalTime > 1) "minutes" else "minute"}"
+
+    }
 
     //adds an Ingredient to the list of ingredients in the recipe
     fun addIngredient(ingredient: Ingredient) {
@@ -90,7 +146,6 @@ class Recipe(var title: String, var servings: Int, var ingredients: MutableList<
 
                 }
             }
-
         }
         }
 

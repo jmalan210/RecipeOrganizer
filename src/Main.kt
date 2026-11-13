@@ -59,6 +59,10 @@ fun main() {
 //        println("${ingredient.quantity}${ingredient.unit?.let {" $it "} ?:""} ${ingredient.name}")
 //    }
 
-    chocChipCookies.editInstruction(8)
+//    chocChipCookies.editInstruction(8)
 
+//chocChipCookies.editTitle()
+
+
+    chocChipCookies.editServings()
 }
