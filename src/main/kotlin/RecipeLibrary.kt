@@ -20,4 +20,8 @@ class RecipeLibrary() {
         }
 
     }
+
+    fun returnAllRecipes():List<Recipe> {
+        return list
+    }
 }
