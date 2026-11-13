@@ -1,4 +1,6 @@
-class Recipe(var title: String, var servings: Int, var ingredients: MutableList<Ingredient> = mutableListOf(), var instructions: MutableList<Instruction> = mutableListOf()) {
+import java.util.UUID
+
+class Recipe(var title: String, var servings: Int, var ingredients: MutableList<Ingredient> = mutableListOf(), var instructions: MutableList<Instruction> = mutableListOf(), val id: String = UUID.randomUUID().toString()) {
     var description: String = ""
     var totalTime: Int = 0 //measured in whole minutes
     var tags: MutableList<Tag> = mutableListOf()
