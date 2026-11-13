@@ -1,6 +1,6 @@
 fun main() {
 
-    val chocChipCookies = Recipe ("Chocolate Chip Cookies", 24)
+    val chocChipCookies = Recipe ("Chocolate Chip Cookies", 36)
 
     println(chocChipCookies.title)
     println("======================")
@@ -16,14 +16,16 @@ fun main() {
     val extract = Ingredient("Maple extract", 1.0, "tsp")
     val soda = Ingredient("Baking Soda", 1.0, "tsp")
     val salt = Ingredient("Salt", 0.5, "tsp")
-    val flour = Ingredient("Flour", 2.75,"cups")
+    val flour = Ingredient("Flour", 2.25,"cups")
     val chips = Ingredient("Semi-sweet chocolate chips", 12.0, "oz")
-    val ingredientsList= mutableListOf<Ingredient>(butter, sugar, bSugar, eggs, extract, soda, salt, flour, chips)
+    val ingredientsList= mutableListOf(butter, sugar, bSugar, eggs, extract, soda, salt, flour, chips)
     chocChipCookies.ingredients.addAll(ingredientsList)
 
+//    chocChipCookies.addIngredient(Ingredient("cinnamon", 1.0, "tsp"))
 //    chocChipCookies.removeIngredient("Cinnamon")
+
     for (ingredient in chocChipCookies.ingredients) {
-        println(ingredient.name)
+        println("${ingredient.quantity}${ingredient.unit?.let {" $it "} ?:""} ${ingredient.name}")
     }
     val preheat = Instruction("Preheat oven to 375 F.")
     val wet = Instruction("In a stand mixer, cream butter, sugars, eggs, and extract until light and fluffy.")
@@ -34,6 +36,7 @@ fun main() {
     val instructionsList = mutableListOf<Instruction>(preheat, wet, dry, stir, bake, cool)
     chocChipCookies.instructions.addAll(instructionsList)
 
+    chocChipCookies.addInstruction(Instruction("Enjoy with a glass of milk!"))
 //    chocChipCookies.removeInstruction(2)
     for (instruction in chocChipCookies.instructions.withIndex()) {
 
@@ -41,15 +44,21 @@ fun main() {
 
     }
 
-    val cookies = chocChipCookies.addTag("Cookies")
-    val test1 = chocChipCookies.addTag("COOKIES")
-    val test2 = chocChipCookies.addTag("cookies")
-    val desserts = chocChipCookies.addTag("Desserts")
-    val chocolate = chocChipCookies.addTag("Chocolate")
+    chocChipCookies.addTag(Tag("Cookies"))
+    chocChipCookies.addTag(Tag("Desserts"))
+    chocChipCookies.addTag(Tag("Chocolate"))
 
 //    chocChipCookies.removeTag("deSserts")
+
     for (tag in chocChipCookies.tags) {
-        println(tag)
+        println(tag.name)
     }
+
+//    chocChipCookies.editIngredient(2)
+//    for (ingredient in chocChipCookies.ingredients) {
+//        println("${ingredient.quantity}${ingredient.unit?.let {" $it "} ?:""} ${ingredient.name}")
+//    }
+
+    chocChipCookies.editInstruction(8)
 
 }

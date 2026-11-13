@@ -1,4 +1,4 @@
-class Instruction(val step: String) {
+class Instruction(var step: String) {
 
 
 }
