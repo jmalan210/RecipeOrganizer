@@ -8,7 +8,7 @@ class RecipeLibrary() {
         list.add(recipe)
     }
 
-    //finds recipe by it's UUID
+    //finds recipe by its UUID
     fun findRecipeById(id: String): Recipe? {
         val recipe = list.find{ it.id == id}
         return recipe
@@ -37,4 +37,28 @@ class RecipeLibrary() {
         }
         return filteredList
     }
+
+    //searches for a recipe by tag.  any() stops function once first tag is found, preventing dupes
+    fun searchByTag(searchTag: String): List<Recipe> {
+        val filteredList = mutableListOf<Recipe>()
+        for (recipe in list) {
+            if (recipe.tags.any {tag -> tag.name.equals(searchTag, ignoreCase = true)}) {
+                filteredList.add(recipe)
+                }
+
+            }
+        return filteredList
+
+    }
+
+    fun searchByIngredient(searchIngredient: String): List<Recipe> {
+        val filteredList = mutableListOf<Recipe>()
+        for (recipe in list) {
+            if (recipe.ingredients.any {ingredient -> ingredient.name.contains(searchIngredient, ignoreCase = true)}) {
+                filteredList.add(recipe)
+            }
+        }
+        return filteredList
+    }
+
 }

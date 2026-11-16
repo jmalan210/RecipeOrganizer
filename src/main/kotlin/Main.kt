@@ -14,7 +14,7 @@ fun main() {
 //    val butter = Ingredient("Butter, softened", 2.0, "cups")
 //    val sugar = Ingredient("White sugar", .75, "cup")
 //    val bSugar = Ingredient("Brown sugar", .75, "cup")
-//    val eggs = Ingredient("Eggs", 2.0)
+//    val eggs = Ingredient("Egg", 1.0)
 //    val extract = Ingredient("Maple extract", 1.0, "tsp")
 //    val soda = Ingredient("Baking Soda", 1.0, "tsp")
 //    val salt = Ingredient("Salt", 0.5, "tsp")
@@ -83,7 +83,7 @@ fun main() {
 //    loadedRecipe.editTitle()
 //    jensRepo.saveLibrary()
 
-    val searchList = jensLib.searchByTitle("pizza")
+    val searchList = jensLib.searchByIngredient("eggs")
     if (searchList.isEmpty()) {
         println("No search results")
     } else
