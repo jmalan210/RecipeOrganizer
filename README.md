@@ -22,12 +22,13 @@ JetBrains IntelliJ IDEA
 {Make a list of websites that you found helpful in this project}
 
 - [ChatGPT](https://chatgpt.com/)
+- [Java Class File](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html#mkdir())
 - [Kotlin](https://kotlinlang.org/)
+
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
 
-- Item 1
+- Connecting to a database and adding logic to delete individual recipes instead of overwriting the entire JSON file each time I save.
 - Item 2
 - Item 3
