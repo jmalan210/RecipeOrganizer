@@ -74,13 +74,21 @@ fun main() {
 //    jensRepo.saveLibrary()
 
     jensRepo.loadLib()
-    val recipes = jensLib.returnAllRecipes()
-    for (recipe in recipes) {
-        println("${recipe.title}- ${recipe.id}")
-    }
+//    val recipes = jensLib.returnAllRecipes()
+//    for (recipe in recipes) {
+//        println("${recipe.title}- ${recipe.id}")
+//    }
+//
+//    val loadedRecipe = recipes[0]
+//    loadedRecipe.editTitle()
+//    jensRepo.saveLibrary()
 
-    val loadedRecipe = recipes[0]
-    loadedRecipe.editTitle()
-    jensRepo.saveLibrary()
+    val searchList = jensLib.searchByTitle("pizza")
+    if (searchList.isEmpty()) {
+        println("No search results")
+    } else
+    for (recipe in searchList) {
+        println(recipe.title)
+    }
 
 }
