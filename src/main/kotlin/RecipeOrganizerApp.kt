@@ -9,19 +9,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Button
-
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import java.text.Normalizer
 
 
 @Composable
 fun RecipeOrganizerApp() {
+   var currentScreen = remember{mutableStateOf("home")}
    MaterialTheme {
-      Column(modifier = Modifier.padding(16.dp).fillMaxWidth(),verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-      Text("Recipe Organizer", style = MaterialTheme.typography.headlineLarge)
-      Text("A place to keep your recipes!")
-         Button(onClick = {println("Add Recipe button clicked!")}) {
-            Text("Add Recipe")
-         }
-   } }
 
+   when (currentScreen.value) {
+      "home" -> HomeScreen({newScreen: String -> currentScreen.value = newScreen})
+      "addRecipe" -> AddRecipeScreen({newScreen: String -> currentScreen.value = newScreen})
+      "recipeList" -> RecipeListScreen({newScreen: String -> currentScreen.value = newScreen})
+      "search" -> SearchScreen({newScreen: String -> currentScreen.value = newScreen})
+      "manageTags" -> ManageTagsScreen({newScreen: String -> currentScreen.value = newScreen})
+      else -> HomeScreen({newScreen: String -> currentScreen.value = newScreen})
+   }
 
+   }
 }
