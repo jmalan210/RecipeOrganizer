@@ -1,5 +1,16 @@
+import androidx.compose.ui.window.application
+import androidx.compose.ui.window.Window
+
+
 fun main() {
 
+    application {
+        val jensLib = RecipeLibrary()
+        val jensRepo = RecipeRepository(jensLib)
+        jensRepo.loadLib()
+        Window(onCloseRequest={exitApplication()}, title = "Recipe Organizer"){RecipeOrganizerApp()}
+    }
+}
 //
 //    val chocChipCookies = Recipe ("Chocolate Chip Cookies", 36)
 //
@@ -68,12 +79,12 @@ fun main() {
 ////
 ////    chocChipCookies.editServings()
 
-    val jensLib = RecipeLibrary()
+
 //    jensLib.addRecipe(chocChipCookies)
-    val jensRepo = RecipeRepository(jensLib)
+
 //    jensRepo.saveLibrary()
 
-    jensRepo.loadLib()
+
 //    val recipes = jensLib.returnAllRecipes()
 //    for (recipe in recipes) {
 //        println("${recipe.title}- ${recipe.id}")
@@ -83,12 +94,11 @@ fun main() {
 //    loadedRecipe.editTitle()
 //    jensRepo.saveLibrary()
 
-    val searchList = jensLib.searchByIngredient("eggs")
-    if (searchList.isEmpty()) {
-        println("No search results")
-    } else
-    for (recipe in searchList) {
-        println(recipe.title)
-    }
+//    val searchList = jensLib.searchByIngredient("eggs")
+//    if (searchList.isEmpty()) {
+//        println("No search results")
+//    } else
+//    for (recipe in searchList) {
+//        println(recipe.title)
+//    }
 
-}
