@@ -8,7 +8,7 @@ fun main() {
         val jensLib = RecipeLibrary()
         val jensRepo = RecipeRepository(jensLib)
         jensRepo.loadLib()
-        Window(onCloseRequest={exitApplication()}, title = "Recipe Organizer"){RecipeOrganizerApp()}
+        Window(onCloseRequest={exitApplication()}, title = "Recipe Organizer"){RecipeOrganizerApp(jensLib, jensRepo)}
     }
 }
 //

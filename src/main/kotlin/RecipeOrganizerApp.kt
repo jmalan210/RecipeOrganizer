@@ -15,13 +15,13 @@ import java.text.Normalizer
 
 
 @Composable
-fun RecipeOrganizerApp() {
+fun RecipeOrganizerApp(recLib: RecipeLibrary, recRepo: RecipeRepository) {
    var currentScreen = remember{mutableStateOf("home")}
    MaterialTheme {
 
    when (currentScreen.value) {
       "home" -> HomeScreen({newScreen: String -> currentScreen.value = newScreen})
-      "addRecipe" -> AddRecipeScreen({newScreen: String -> currentScreen.value = newScreen})
+      "addRecipe" -> AddRecipeScreen({newScreen: String -> currentScreen.value = newScreen}, recLib, recRepo)
       "recipeList" -> RecipeListScreen({newScreen: String -> currentScreen.value = newScreen})
       "search" -> SearchScreen({newScreen: String -> currentScreen.value = newScreen})
       "manageTags" -> ManageTagsScreen({newScreen: String -> currentScreen.value = newScreen})

@@ -1,4 +1,4 @@
 import kotlinx.serialization.Serializable
 @Serializable
-class Tag(val name: String) {
+data class Tag(val name: String) {
 }
