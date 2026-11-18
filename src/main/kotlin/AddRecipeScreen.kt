@@ -56,6 +56,9 @@ fun AddRecipeScreen(onNavigate: (String) -> Unit) {
     ).sorted()
     val ingredientList = remember{mutableStateListOf<Ingredient>()}
     val editedIngredient = remember{mutableStateOf<Int?>(null)}
+    val instruction = remember{mutableStateOf("")}
+    val instructionList = remember{mutableStateListOf<Instruction>()}
+    val editedInstruction = remember{mutableStateOf<Int?>(null)}
 
     fun addIngredient(name: String, quantity: String, unit: String?) {
         val convertedQuantity = quantity.toDoubleOrNull()
@@ -65,6 +68,14 @@ fun AddRecipeScreen(onNavigate: (String) -> Unit) {
             ingredientName.value = ""
             ingredientQuantity.value = ""
             ingredientUnit.value = null
+        }
+    }
+
+    fun addInstruction(step: String) {
+        if (step.isNotBlank()) {
+            val instructionStep = Instruction(step)
+            instructionList.add(instructionStep)
+            instruction.value = ""
         }
     }
 
@@ -79,6 +90,7 @@ fun AddRecipeScreen(onNavigate: (String) -> Unit) {
             title.value,
             onValueChange = { newTitle -> title.value = newTitle },
             label = { Text("Title") })
+
         OutlinedTextField(
             description.value,
             onValueChange = { newDescription -> description.value = newDescription },
@@ -117,33 +129,84 @@ fun AddRecipeScreen(onNavigate: (String) -> Unit) {
             ExposedDropdownMenu(
                 expanded = unitDropdownExpanded.value,
                 onDismissRequest = { unitDropdownExpanded.value = false }) {
-                unitList.forEach { unit -> DropdownMenuItem(text = {Text(unit)}, onClick = {ingredientUnit.value = unit
-                    unitDropdownExpanded.value = false })
+                unitList.forEach { unit ->
+                    DropdownMenuItem(text = { Text(unit) }, onClick = {
+                        ingredientUnit.value = unit
+                        unitDropdownExpanded.value = false
+                    })
 
+                }
             }
         }
-    }
-        Button(onClick = {if (editedIngredient.value == null) {addIngredient(ingredientName.value, ingredientQuantity.value, ingredientUnit.value)}
-        else { ingredientList[editedIngredient.value!!] = Ingredient(ingredientName.value, ingredientQuantity.value.toDouble(), ingredientUnit.value)
-        editedIngredient.value = null
-            ingredientName.value = ""
-            ingredientQuantity.value = ""
-            ingredientUnit.value = null}}) {
-            Text("Add Ingredient")
-        }
+            Button(onClick = {
+                if (editedIngredient.value == null) {
+                    addIngredient(ingredientName.value, ingredientQuantity.value, ingredientUnit.value)
+                } else {
+                    ingredientList[editedIngredient.value!!] =
+                        Ingredient(ingredientName.value, ingredientQuantity.value.toDouble(), ingredientUnit.value)
+                    editedIngredient.value = null
+                    ingredientName.value = ""
+                    ingredientQuantity.value = ""
+                    ingredientUnit.value = null
+                }
+            }) {
+                Text("Add Ingredient")
+            }
 
 
             ingredientList.forEachIndexed { index, ingredient ->
                 Text("${ingredient.quantity} ${ingredient.unit} ${ingredient.name}")
-                Button(onClick = {ingredientList.remove(ingredient)}) {
+                Button(onClick = { ingredientList.remove(ingredient) }) {
                     Text("X")
                 }
-                Button(onClick = {editedIngredient.value = index
+                Button(onClick = {
+                    editedIngredient.value = index
                     ingredientName.value = ingredient.name
                     ingredientUnit.value = ingredient.unit
-                    ingredientQuantity.value = ingredient.quantity.toString()}) {
+                    ingredientQuantity.value = ingredient.quantity.toString()
+                }) {
                     Text("edit")
                 }
+            }
+
+            OutlinedTextField(
+                instruction.value,
+                onValueChange = { newInstruction -> instruction.value = newInstruction },
+                label = { Text("Instructions") },
+                minLines = 3,
+                maxLines = 5
+            )
+
+            Button(onClick = {
+                if (editedInstruction.value == null) {
+                    addInstruction(instruction.value)
+                } else {
+                    instructionList[editedInstruction.value!!] = Instruction(instruction.value)
+                    editedInstruction.value = null
+                    instruction.value = ""
+                }
+            }
+            ) {
+                Text("Add Instruction")
+            }
+
+            instructionList.forEachIndexed { index, instructionStep ->
+                Text("${index + 1}. ${instructionStep.step}")
+                Button(onClick = {
+                    if (editedInstruction.value == index) {
+                        editedInstruction.value = null
+                        instruction.value = ""
+                    }
+                    instructionList.remove(instructionStep)
+                })
+
+
+                { Text("X") }
+
+                Button(onClick = {
+                    editedInstruction.value = index
+                    instruction.value = instructionStep.step
+                }) { Text("edit") }
             }
 
 

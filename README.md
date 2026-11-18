@@ -19,8 +19,9 @@ JetBrains IntelliJ IDEA
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
 
+
+- [Android Developer](https://developer.android.com/)
 - [ChatGPT](https://chatgpt.com/)
 - [Java Class File](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html#mkdir())
 - [Kotlin](https://kotlinlang.org/)
