@@ -23,14 +23,14 @@ import androidx.compose.runtime.mutableStateListOf
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun AddRecipeScreen(onNavigate: (String) -> Unit) {
-    var title = remember { mutableStateOf("") }
-    var description = remember { mutableStateOf("") }
-    var servings = remember { mutableStateOf("") }
-    var totalTime = remember { mutableStateOf("") }
-    var ingredientName = remember { mutableStateOf("") }
-    var ingredientQuantity = remember { mutableStateOf("") }
-    var ingredientUnit = remember { mutableStateOf<String?>(null) }
-    var unitDropdownExpanded = remember { mutableStateOf(false) }
+    val title = remember { mutableStateOf("") }
+    val description = remember { mutableStateOf("") }
+    val servings = remember { mutableStateOf("") }
+    val totalTime = remember { mutableStateOf("") }
+    val ingredientName = remember { mutableStateOf("") }
+    val ingredientQuantity = remember { mutableStateOf("") }
+    val ingredientUnit = remember { mutableStateOf<String?>(null) }
+    val unitDropdownExpanded = remember { mutableStateOf(false) }
     val unitList: List<String> = listOf(
         "Cup",
         "Tablespoon",
@@ -54,8 +54,8 @@ fun AddRecipeScreen(onNavigate: (String) -> Unit) {
         "Box",
         "Package"
     ).sorted()
-    var ingredientList = remember{mutableStateListOf<Ingredient>()}
-    var editedIngredient = remember{mutableStateOf<Int?>(null)}
+    val ingredientList = remember{mutableStateListOf<Ingredient>()}
+    val editedIngredient = remember{mutableStateOf<Int?>(null)}
 
     fun addIngredient(name: String, quantity: String, unit: String?) {
         val convertedQuantity = quantity.toDoubleOrNull()
