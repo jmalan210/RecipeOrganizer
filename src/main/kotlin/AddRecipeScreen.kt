@@ -266,6 +266,14 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
             recLib.addRecipe(recipe)
             recRepo.saveLibrary()
             recipeSaved.value = true
+            recipeSaveFailed.value = false
+            title.value = ""
+            servings.value = ""
+            description.value = ""
+            totalTime.value = ""
+            ingredientList.clear()
+            instructionList.clear()
+            selectedTags.clear()
         }
             else {
             println("Validation failed")
@@ -278,6 +286,8 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         }
         if (recipeSaved.value) {
             Text("Recipe saved!")
+
+
         }
 
         if (recipeSaveFailed.value) {
