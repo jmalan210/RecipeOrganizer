@@ -141,7 +141,7 @@ fun AddRecipeScreen(onNavigate: (String) -> Unit) {
                 Button(onClick = {editedIngredient.value = index
                     ingredientName.value = ingredient.name
                     ingredientUnit.value = ingredient.unit
-                ingredientQuantity.value = ingredient.quantity.toString()}) {
+                    ingredientQuantity.value = ingredient.quantity.toString()}) {
                     Text("edit")
                 }
             }
