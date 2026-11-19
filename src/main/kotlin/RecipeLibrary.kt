@@ -1,6 +1,9 @@
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+
 class RecipeLibrary() {
 
-    private var list: MutableList<Recipe> = mutableListOf()
+    private var list: SnapshotStateList<Recipe> = mutableStateListOf()
 
     //adds recipe to the library
     fun addRecipe(recipe: Recipe) {
@@ -16,9 +19,19 @@ class RecipeLibrary() {
 
     //removes a recipe from the library
     fun removeRecipe(id: String) {
+        println(list.size)
         val recipe = list.find { it.id == id }
+        println(recipe==null)
+        println(recipe?.id)
         if (recipe != null) {
             list.remove(recipe)
+            list.forEach { recipe ->
+                println("${recipe.title} - ${recipe.id}")
+            }
+            println(list.size)
+            list.forEach { recipe ->
+                println(recipe.id)
+            }
         }
 
     }

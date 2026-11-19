@@ -3,11 +3,11 @@ import androidx.compose.ui.window.Window
 
 
 fun main() {
-
+    val jensLib = RecipeLibrary()
+    val jensRepo = RecipeRepository(jensLib)
+    jensRepo.loadLib()
     application {
-        val jensLib = RecipeLibrary()
-        val jensRepo = RecipeRepository(jensLib)
-        jensRepo.loadLib()
+
         Window(onCloseRequest={exitApplication()}, title = "Recipe Organizer"){RecipeOrganizerApp(jensLib, jensRepo)}
     }
 }
