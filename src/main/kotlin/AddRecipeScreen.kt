@@ -1,6 +1,7 @@
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -22,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+
 
 
 val tagList: List<Tag> = listOf(Tag("Breakfast"), Tag("Main Meals"), Tag("Soups"), Tag("Desserts"), Tag("Chocolate"), Tag("Cookies"), Tag("Snacks"), Tag("Quick Meals"), Tag("Appetizers"), Tag("Drinks"), Tag("Chicken"), Tag("Beef"), Tag("Pork"), Tag("Slow Cooker"), Tag("Italian"), Tag("Mexican"), Tag("Indian"), Tag("Thai")).sortedBy {tag -> tag.name }
@@ -145,41 +147,50 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
             onValueChange = { newTotalTime -> totalTime.value = newTotalTime },
             label = { Text("Total Time (minutes)") },
             singleLine = true)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically){
 
-        OutlinedTextField(
-            ingredientName.value,
-            onValueChange = { newIngredientName: String -> ingredientName.value = newIngredientName },
-            label = { Text("IngredientName") },
-            singleLine = true)
 
-        OutlinedTextField(
-            ingredientQuantity.value,
-            onValueChange = { newIngredientQuantity -> ingredientQuantity.value = newIngredientQuantity },
-            label = { Text("Quantity") },
-            singleLine = true)
-
-        ExposedDropdownMenuBox(
-            expanded = unitDropdownExpanded.value,
-            onExpandedChange = { newUnitDropdownExpanded -> unitDropdownExpanded.value = newUnitDropdownExpanded }) {
             OutlinedTextField(
-                value = ingredientUnit.value ?: "",
-                readOnly = true,
-                onValueChange = {},
-                label = { Text("Unit") },
-                modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = true),
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(unitDropdownExpanded.value) })
-            ExposedDropdownMenu(
-                expanded = unitDropdownExpanded.value,
-                onDismissRequest = { unitDropdownExpanded.value = false }) {
-                unitList.forEach { unit ->
-                    DropdownMenuItem(text = { Text(unit) }, onClick = {
-                        ingredientUnit.value = unit
-                        unitDropdownExpanded.value = false
-                    })
+                ingredientQuantity.value,
+                onValueChange = { newIngredientQuantity -> ingredientQuantity.value = newIngredientQuantity },
+                label = { Text("Quantity") },
+                singleLine = true,
+                modifier = Modifier.weight(1.0F)
+            )
 
+            ExposedDropdownMenuBox(
+                expanded = unitDropdownExpanded.value,
+                onExpandedChange = { newUnitDropdownExpanded ->
+                    unitDropdownExpanded.value = newUnitDropdownExpanded
+                },
+                modifier = Modifier.weight(1.5F)) {
+                OutlinedTextField(
+                    value = ingredientUnit.value ?: "",
+                    readOnly = true,
+                    onValueChange = {},
+                    label = { Text("Unit") },
+                    modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = true),
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(unitDropdownExpanded.value) })
+                ExposedDropdownMenu(
+                    expanded = unitDropdownExpanded.value,
+                    onDismissRequest = { unitDropdownExpanded.value = false }) {
+                    unitList.forEach { unit ->
+                        DropdownMenuItem(text = { Text(unit) }, onClick = {
+                            ingredientUnit.value = unit
+                            unitDropdownExpanded.value = false
+                        })
+
+                    }
                 }
             }
-        }
+            OutlinedTextField(
+                ingredientName.value,
+                onValueChange = { newIngredientName: String -> ingredientName.value = newIngredientName },
+                label = { Text("IngredientName") },
+                singleLine = true,
+                modifier = Modifier.weight(3.0F)
+
+            )
             Button(onClick = {
                 if (editedIngredient.value == null) {
                     addIngredient(ingredientName.value, ingredientQuantity.value, ingredientUnit.value)
@@ -192,14 +203,15 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                     ingredientUnit.value = null
                 }
             }) {
-                Text("Add Ingredient")
+                Text("+")
             }
+        }
 
-
+        Row(verticalAlignment = Alignment.CenterVertically) {
             ingredientList.forEachIndexed { index, ingredient ->
                 Text("${ingredient.quantity} ${ingredient.unit} ${ingredient.name}")
                 Button(onClick = { ingredientList.remove(ingredient) }) {
-                    Text("X")
+                    Text("x")
                 }
                 Button(onClick = {
                     editedIngredient.value = index
@@ -210,12 +222,14 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                     Text("edit")
                 }
             }
-
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 instruction.value,
                 onValueChange = { newInstruction -> instruction.value = newInstruction },
                 label = { Text("Instructions") },
-                maxLines = 5
+                maxLines = 5,
+                modifier = Modifier.weight(5.0F)
             )
 
             Button(onClick = {
@@ -228,37 +242,39 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                 }
             }
             ) {
-                Text("Add Instruction")
+                Text("Add Step")
             }
+        }
+            Row (verticalAlignment = Alignment.CenterVertically){
+                instructionList.forEachIndexed { index, instructionStep ->
+                    Text("${index + 1}. ${instructionStep.step}")
+                    Button(onClick = {
+                        if (editedInstruction.value == index) {
+                            editedInstruction.value = null
+                            instruction.value = ""
+                        }
+                        instructionList.remove(instructionStep)
+                    })
 
-            instructionList.forEachIndexed { index, instructionStep ->
-                Text("${index + 1}. ${instructionStep.step}")
-                Button(onClick = {
-                    if (editedInstruction.value == index) {
-                        editedInstruction.value = null
-                        instruction.value = ""
-                    }
-                    instructionList.remove(instructionStep)
-                })
 
+                    { Text("x") }
 
-                { Text("X") }
-
-                Button(onClick = {
-                    editedInstruction.value = index
-                    instruction.value = instructionStep.step
-                }) { Text("edit") }
+                    Button(onClick = {
+                        editedInstruction.value = index
+                        instruction.value = instructionStep.step
+                    }) { Text("edit") }
+                }
             }
-
+        FlowRow() {
         tagList.forEach {tag ->
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = selectedTags.contains(tag), onCheckedChange = {isChecked -> if(isChecked) {selectedTags.add(tag)}
                 else {selectedTags.remove(tag)}})
                 Text(tag.name)
 
             }
         }
-
+        }
         Button(onClick = {if (fieldValidation()) {
             val convertedServings = servings.value.toIntOrNull()
             val convertedTime = totalTime.value.toIntOrNull()
@@ -300,3 +316,5 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         Text("Back")
 
     }}
+
+
