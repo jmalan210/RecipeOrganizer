@@ -29,7 +29,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 val tagList: List<Tag> = listOf(Tag("Breakfast"), Tag("Main Meals"), Tag("Soups"), Tag("Desserts"), Tag("Chocolate"), Tag("Cookies"), Tag("Snacks"), Tag("Quick Meals"), Tag("Appetizers"), Tag("Drinks"), Tag("Chicken"), Tag("Beef"), Tag("Pork"), Tag("Slow Cooker"), Tag("Italian"), Tag("Mexican"), Tag("Indian"), Tag("Thai")).sortedBy {tag -> tag.name }
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, recipe: Recipe? = null) {
+fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, recipe: Recipe? = null, onRecipeSaved: (String) -> Unit) {
     val title = remember(recipe?.id) { mutableStateOf(recipe?.title?:"") }
     val description = remember(recipe?.id) { mutableStateOf(recipe?.description?:"") }
     val servings = remember(recipe?.id) { mutableStateOf(recipe?.servings.toString()?:"") }
@@ -278,11 +278,12 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         Button(onClick = {if (fieldValidation()) {
             val convertedServings = servings.value.toIntOrNull()
             val convertedTime = totalTime.value.toIntOrNull()
+            var savedId:String? = null
             //logic to add new recipe
             if(recipe == null){
                 val recipe = Recipe(title.value, convertedServings!!, description.value,  convertedTime!!, ingredientList, instructionList, selectedTags  )
                 recLib.addRecipe(recipe)
-
+                savedId = recipe.id
                 recipeSaved.value = true
                 recipeSaveFailed.value = false
                 title.value = ""
@@ -301,11 +302,13 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                 recipe.ingredients = ingredientList.toMutableList()
                 recipe.instructions = instructionList.toMutableList()
                 recipe.tags = selectedTags.toMutableList()
+                savedId = recipe.id
                 recipeSaved.value = true
                 recipeSaveFailed.value = false
 
             }
             recRepo.saveLibrary()
+            onRecipeSaved(savedId)
         }
             else {
             println("Validation failed")

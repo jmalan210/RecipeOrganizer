@@ -15,20 +15,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, onEditRecipe: (Recipe) -> Unit) {
-    println("Test")
+fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, onEditRecipe: (Recipe) -> Unit, savedRecipeId: String? = null) {
+
     val recipeList = recLib.returnAllRecipes().sortedBy{recipe-> recipe.title.lowercase()}
-
-
-    val selectedRecipe: MutableState<Recipe?> = remember { mutableStateOf<Recipe?>(null) }
-
+    val selectedRecipe: MutableState<Recipe?> = remember(savedRecipeId) { mutableStateOf<Recipe?>(savedRecipeId?.let{recLib.findRecipeById(it)}) }
+    val listState = rememberLazyListState()
+    val savedRecipeIndex= recipeList.indexOfFirst{it.id ==savedRecipeId}
+    LaunchedEffect(savedRecipeId) {
+        if (savedRecipeIndex != -1) {
+        listState.animateScrollToItem(savedRecipeIndex + 1)
+    }}
     LazyColumn(
         modifier = Modifier.padding(16.dp).fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
+        state = listState
 //        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
