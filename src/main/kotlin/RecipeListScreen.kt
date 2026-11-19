@@ -21,25 +21,22 @@ import androidx.compose.ui.text.font.FontWeight
 @Composable
 fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository) {
     println("Test")
-    val recipeList = recLib.returnAllRecipes()
-    for (recipe in recipeList) {
-        println("${recipe.title} - ${recipe.id}")
+    val recipeList = recLib.returnAllRecipes().sortedBy{recipe-> recipe.title.lowercase()}
 
-    }
-    val recipeListSize = recipeList.size
+
     val selectedRecipe: MutableState<Recipe?> = remember { mutableStateOf<Recipe?>(null) }
 
-    Column(
+    LazyColumn(
         modifier = Modifier.padding(16.dp).fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
 //        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-                     Text(recipeListSize.toString())
 
 
-            Text("Recipe List Screen")
+        item { Text("All Recipes") }
 
-        recipeList.forEach { recipe ->
+
+        items(recipeList) { recipe ->
             val currentRecipe = selectedRecipe.value
             Card(modifier = Modifier.padding(10.dp)) {
                 Text(recipe.title, fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp).clickable {
@@ -72,20 +69,21 @@ fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRep
                     }
 
                     Button(onClick = {
-                        println("BEFORE DELETE BUTTON CLICKED")
+
                         recLib.removeRecipe(recipeValue.id)
-                        println("AFTER DELETE BUTTON CLICKED")
-//                        selectedRecipe.value = null
+                        recRepo.saveLibrary()
+                        selectedRecipe.value = null
                     }) {
                         Text("Delete Recipe")
                     }
                 }
             }
         }
-
-                Button(onClick = { onNavigate("home") }) {
-                    Text("Back")
+        item {
+            Button(onClick = { onNavigate("home") }) {
+                Text("Back")
 
             }
         }
     }
+}
