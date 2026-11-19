@@ -19,7 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository) {
+fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, onEditRecipe: (Recipe) -> Unit) {
     println("Test")
     val recipeList = recLib.returnAllRecipes().sortedBy{recipe-> recipe.title.lowercase()}
 
@@ -75,6 +75,10 @@ fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRep
                         selectedRecipe.value = null
                     }) {
                         Text("Delete Recipe")
+                    }
+
+                    Button(onClick = {onEditRecipe(recipeValue)}) {
+                        Text("Edit Recipe")
                     }
                 }
             }

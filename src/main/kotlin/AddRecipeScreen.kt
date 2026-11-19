@@ -29,11 +29,11 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 val tagList: List<Tag> = listOf(Tag("Breakfast"), Tag("Main Meals"), Tag("Soups"), Tag("Desserts"), Tag("Chocolate"), Tag("Cookies"), Tag("Snacks"), Tag("Quick Meals"), Tag("Appetizers"), Tag("Drinks"), Tag("Chicken"), Tag("Beef"), Tag("Pork"), Tag("Slow Cooker"), Tag("Italian"), Tag("Mexican"), Tag("Indian"), Tag("Thai")).sortedBy {tag -> tag.name }
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository) {
-    val title = remember { mutableStateOf("") }
-    val description = remember { mutableStateOf("") }
-    val servings = remember { mutableStateOf("") }
-    val totalTime = remember { mutableStateOf("") }
+fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, recipe: Recipe? = null) {
+    val title = remember(recipe?.id) { mutableStateOf(recipe?.title?:"") }
+    val description = remember(recipe?.id) { mutableStateOf(recipe?.description?:"") }
+    val servings = remember(recipe?.id) { mutableStateOf(recipe?.servings.toString()?:"") }
+    val totalTime = remember(recipe?.id) { mutableStateOf(recipe?.totalTime.toString()?:"") }
     val ingredientName = remember { mutableStateOf("") }
     val ingredientQuantity = remember { mutableStateOf("") }
     val ingredientUnit = remember { mutableStateOf<String?>(null) }
@@ -61,12 +61,12 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         "Box",
         "Package"
     ).sorted()
-    val ingredientList = remember{mutableStateListOf<Ingredient>()}
+    val ingredientList = remember(recipe?.id){mutableStateListOf<Ingredient>(*(recipe?.ingredients?.toTypedArray()?: emptyArray<Ingredient>()))} //*spread operator expands array into individual arguments
     val editedIngredient = remember{mutableStateOf<Int?>(null)}
     val instruction = remember{mutableStateOf("")}
-    val instructionList = remember{mutableStateListOf<Instruction>()}
+    val instructionList = remember(recipe?.id){mutableStateListOf<Instruction>(*(recipe?.instructions?.toTypedArray()?:emptyArray<Instruction>()))}
     val editedInstruction = remember{mutableStateOf<Int?>(null)}
-    val selectedTags: SnapshotStateList<Tag> = remember{mutableStateListOf<Tag>()}
+    val selectedTags: SnapshotStateList<Tag> = remember(recipe?.id){mutableStateListOf<Tag>(*(recipe?.tags?.toTypedArray()?:emptyArray<Tag>()))}
     val errorMessage = remember{mutableStateOf("")}
     val recipeSaved = remember{mutableStateOf(false)}
     val recipeSaveFailed = remember{mutableStateOf(false)}
@@ -278,25 +278,42 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         Button(onClick = {if (fieldValidation()) {
             val convertedServings = servings.value.toIntOrNull()
             val convertedTime = totalTime.value.toIntOrNull()
-            val recipe = Recipe(title.value, convertedServings!!, description.value,  convertedTime!!, ingredientList, instructionList, selectedTags  )
-            recLib.addRecipe(recipe)
+            //logic to add new recipe
+            if(recipe == null){
+                val recipe = Recipe(title.value, convertedServings!!, description.value,  convertedTime!!, ingredientList, instructionList, selectedTags  )
+                recLib.addRecipe(recipe)
+
+                recipeSaved.value = true
+                recipeSaveFailed.value = false
+                title.value = ""
+                servings.value = ""
+                description.value = ""
+                totalTime.value = ""
+                ingredientList.clear()
+                instructionList.clear()
+                selectedTags.clear()}
+            //logic to edit existing recipe
+            else {
+                recipe.title = title.value
+                recipe.description = description.value
+                recipe.servings = convertedServings!!
+                recipe.totalTime = convertedTime!!
+                recipe.ingredients = ingredientList.toMutableList()
+                recipe.instructions = instructionList.toMutableList()
+                recipe.tags = selectedTags.toMutableList()
+                recipeSaved.value = true
+                recipeSaveFailed.value = false
+
+            }
             recRepo.saveLibrary()
-            recipeSaved.value = true
-            recipeSaveFailed.value = false
-            title.value = ""
-            servings.value = ""
-            description.value = ""
-            totalTime.value = ""
-            ingredientList.clear()
-            instructionList.clear()
-            selectedTags.clear()
         }
             else {
             println("Validation failed")
             recipeSaveFailed.value = true
         }})
         {
-            Text("Add Recipe")
+            Text(if(recipe == null){"Add Recipe"}
+            else {"Save Changes"})
 
 
         }
