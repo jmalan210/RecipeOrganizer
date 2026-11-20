@@ -26,14 +26,16 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Add
-
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.zIndex
 
 
 @Composable
@@ -124,238 +126,336 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         return true
     }
 
+    Box {
 
-    Column(
-        modifier = Modifier.padding(16.dp).fillMaxWidth().verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(if (recipe == null) {"Add a New Recipe"} else {"Edit Recipe"}, style = MaterialTheme.typography.headlineLarge)
+        Button(onClick = { onNavigate("home")}, modifier=Modifier.padding(16.dp).align(Alignment.TopStart).zIndex(1f)) {
+            Icon(imageVector = Icons.Filled.Home, contentDescription = "Back to Main Page")
 
-        OutlinedTextField(
-            title.value,
-            onValueChange = { newTitle -> title.value = newTitle },
-            label = { Text("Title") },
-             singleLine = true,
-            modifier = Modifier.fillMaxWidth())
-
-        OutlinedTextField(
-            description.value,
-            onValueChange = { newDescription -> description.value = newDescription },
-            label = { Text("Description") },
-            maxLines = 5,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                servings.value,
-                onValueChange = { newServings -> servings.value = newServings },
-                label = { Text("Servings") },
-                singleLine = true
+        }}
+        Column(
+            modifier = Modifier.padding(16.dp).fillMaxWidth().verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                if (recipe == null) {
+                    "Add a New Recipe"
+                } else {
+                    "Edit Recipe"
+                }, style = MaterialTheme.typography.headlineLarge
             )
 
-            Text(errorMessage.value)
-
             OutlinedTextField(
-                totalTime.value,
-                onValueChange = { newTotalTime -> totalTime.value = newTotalTime },
-                label = { Text("Total Time (minutes)") },
-                singleLine = true
-            )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically){
-
-
-            OutlinedTextField(
-                ingredientQuantity.value,
-                onValueChange = { newIngredientQuantity -> ingredientQuantity.value = newIngredientQuantity },
-                label = { Text("Quantity") },
+                title.value,
+                onValueChange = { newTitle -> title.value = newTitle },
+                label = { Text("Title") },
                 singleLine = true,
-                modifier = Modifier.weight(1.0F)
+                modifier = Modifier.fillMaxWidth()
             )
 
-            ExposedDropdownMenuBox(
-                expanded = unitDropdownExpanded.value,
-                onExpandedChange = { newUnitDropdownExpanded ->
-                    unitDropdownExpanded.value = newUnitDropdownExpanded
-                },
-                modifier = Modifier.weight(1.5F)) {
+            OutlinedTextField(
+                description.value,
+                onValueChange = { newDescription -> description.value = newDescription },
+                label = { Text("Description") },
+                maxLines = 5,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 OutlinedTextField(
-                    value = ingredientUnit.value ?: "",
-                    readOnly = true,
-                    onValueChange = {},
-                    label = { Text("Unit") },
-                    modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = true),
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(unitDropdownExpanded.value) })
-                ExposedDropdownMenu(
-                    expanded = unitDropdownExpanded.value,
-                    onDismissRequest = { unitDropdownExpanded.value = false }) {
-                    unitList.forEach { unit ->
-                        DropdownMenuItem(text = { Text(unit) }, onClick = {
-                            ingredientUnit.value = unit
-                            unitDropdownExpanded.value = false
-                        })
+                    servings.value,
+                    onValueChange = { newServings -> servings.value = newServings },
+                    label = { Text("Servings") },
+                    singleLine = true
+                )
 
+                Text(errorMessage.value)
+
+                OutlinedTextField(
+                    totalTime.value,
+                    onValueChange = { newTotalTime -> totalTime.value = newTotalTime },
+                    label = { Text("Total Time (minutes)") },
+                    singleLine = true
+                )
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+
+
+                OutlinedTextField(
+                    ingredientQuantity.value,
+                    onValueChange = { newIngredientQuantity -> ingredientQuantity.value = newIngredientQuantity },
+                    label = { Text("Quantity") },
+                    singleLine = true,
+                    modifier = Modifier.weight(1.0F)
+                )
+
+                ExposedDropdownMenuBox(
+                    expanded = unitDropdownExpanded.value,
+                    onExpandedChange = { newUnitDropdownExpanded ->
+                        unitDropdownExpanded.value = newUnitDropdownExpanded
+                    },
+                    modifier = Modifier.weight(1.5F)
+                ) {
+                    OutlinedTextField(
+                        value = ingredientUnit.value ?: "",
+                        readOnly = true,
+                        onValueChange = {},
+                        label = { Text("Unit") },
+                        modifier = Modifier.menuAnchor(
+                            ExposedDropdownMenuAnchorType.PrimaryNotEditable,
+                            enabled = true
+                        ),
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(unitDropdownExpanded.value) })
+                    ExposedDropdownMenu(
+                        expanded = unitDropdownExpanded.value,
+                        onDismissRequest = { unitDropdownExpanded.value = false }) {
+                        unitList.forEach { unit ->
+                            DropdownMenuItem(text = { Text(unit) }, onClick = {
+                                ingredientUnit.value = unit
+                                unitDropdownExpanded.value = false
+                            })
+
+                        }
                     }
                 }
-            }
-            OutlinedTextField(
-                ingredientName.value,
-                onValueChange = { newIngredientName: String -> ingredientName.value = newIngredientName },
-                label = { Text("IngredientName") },
-                singleLine = true,
-                modifier = Modifier.weight(3.0F)
+                OutlinedTextField(
+                    ingredientName.value,
+                    onValueChange = { newIngredientName: String -> ingredientName.value = newIngredientName },
+                    label = { Text("IngredientName") },
+                    singleLine = true,
+                    modifier = Modifier.weight(3.0F)
 
-            )
-            Button(onClick = {
-                if (editedIngredient.value == null) {
-                    addIngredient(ingredientName.value, ingredientQuantity.value, ingredientUnit.value)
-                } else {
-                    ingredientList[editedIngredient.value!!] =
-                        Ingredient(ingredientName.value, ingredientQuantity.value.toDouble(), ingredientUnit.value)
-                    editedIngredient.value = null
-                    ingredientName.value = ""
-                    ingredientQuantity.value = ""
-                    ingredientUnit.value = null
+                )
+                Button(
+                    onClick = {
+                        if (editedIngredient.value == null) {
+                            addIngredient(ingredientName.value, ingredientQuantity.value, ingredientUnit.value)
+                        } else {
+                            ingredientList[editedIngredient.value!!] =
+                                Ingredient(
+                                    ingredientName.value,
+                                    ingredientQuantity.value.toDouble(),
+                                    ingredientUnit.value
+                                )
+                            editedIngredient.value = null
+                            ingredientName.value = ""
+                            ingredientQuantity.value = ""
+                            ingredientUnit.value = null
+                        }
+                    },
+                    modifier = Modifier.size(20.dp), contentPadding = PaddingValues(1.dp),
+                    shape = CircleShape
+                ) {
+                    Icon(
+                        modifier = Modifier.size(12.dp),
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Add Ingredient"
+                    )
                 }
-            },
-                modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp)) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Ingredient")
             }
-        }
 
 
             ingredientList.forEachIndexed { index, ingredient ->
-                Row(modifier=Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text("${ingredient.quantity} ${ingredient.unit} ${ingredient.name}")
-                    Row {
-                        Button(onClick = { ingredientList.remove(ingredient) }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(0.dp)) {
-                            Icon(imageVector = Icons.Filled.Close, contentDescription = "Delete Ingredient")
+                Row(
+                    modifier = Modifier.fillMaxWidth().border(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("${ingredient.quantity} ${ingredient.unit} ${ingredient.name}")
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = { ingredientList.remove(ingredient) },
+                            modifier = Modifier.size(20.dp),
+                            contentPadding = PaddingValues(0.dp),
+                            shape = CircleShape
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(12.dp),
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Delete Ingredient"
+                            )
                         }
                         Button(onClick = {
                             editedIngredient.value = index
                             ingredientName.value = ingredient.name
                             ingredientUnit.value = ingredient.unit
                             ingredientQuantity.value = ingredient.quantity.toString()
-                        }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp)) {
-                           Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Ingredient")
+                        }, modifier = Modifier.size(20.dp), contentPadding = PaddingValues(1.dp), shape = CircleShape) {
+                            Icon(
+                                modifier = Modifier.size(12.dp),
+                                imageVector = Icons.Filled.Edit,
+                                contentDescription = "Edit Ingredient"
+                            )
                         }
                     }
-            }
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                instruction.value,
-                onValueChange = { newInstruction -> instruction.value = newInstruction },
-                label = { Text("Instructions (can add multiple steps)") },
-                maxLines = 5,
-                modifier = Modifier.weight(5.0F)
-            )
-
-            Button(onClick = {
-                if (editedInstruction.value == null) {
-                    addInstruction(instruction.value)
-                } else {
-                    instructionList[editedInstruction.value!!] = Instruction(instruction.value)
-                    editedInstruction.value = null
-                    instruction.value = ""
                 }
-            }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(0.dp)
-            ) {
-               Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Instruction")
             }
-        }
-            Row (horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                instructionList.forEachIndexed { index, instructionStep ->
-                    Text("${index + 1}. ${instructionStep.step}")
-                    Button(onClick = {
-                        if (editedInstruction.value == index) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                OutlinedTextField(
+                    instruction.value,
+                    onValueChange = { newInstruction -> instruction.value = newInstruction },
+                    label = { Text("Instructions (can add multiple steps)") },
+                    maxLines = 5,
+                    modifier = Modifier.weight(5.0F)
+                )
+
+                Button(
+                    onClick = {
+                        if (editedInstruction.value == null) {
+                            addInstruction(instruction.value)
+                        } else {
+                            instructionList[editedInstruction.value!!] = Instruction(instruction.value)
                             editedInstruction.value = null
                             instruction.value = ""
                         }
-                        instructionList.remove(instructionStep)
-                    }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp))
-
-
-                    { Icon(imageVector = Icons.Filled.Close, contentDescription = "Delete Instruction") }
-
-                    Button(onClick = {
-                        editedInstruction.value = index
-                        instruction.value = instructionStep.step
-                    }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp)) { Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Instruction") }
+                    }, modifier = Modifier.size(20.dp), contentPadding = PaddingValues(0.dp), shape = CircleShape
+                ) {
+                    Icon(
+                        modifier = Modifier.size(12.dp),
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Add Instruction"
+                    )
                 }
             }
-        Text("Categories")
-        FlowRow(modifier= Modifier.border(1.dp, MaterialTheme.colorScheme.outline).padding(12.dp)) {
-        tagList.forEach {tag ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = selectedTags.contains(tag), onCheckedChange = {isChecked -> if(isChecked) {selectedTags.add(tag)}
-                else {selectedTags.remove(tag)}})
-                Text(tag.name)
+
+            instructionList.forEachIndexed { index, instructionStep ->
+                Row(
+                    modifier = Modifier.fillMaxWidth().border(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("${index + 1}. ${instructionStep.step}")
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = {
+                                if (editedInstruction.value == index) {
+                                    editedInstruction.value = null
+                                    instruction.value = ""
+                                }
+                                instructionList.remove(instructionStep)
+                            },
+                            modifier = Modifier.size(20.dp),
+                            contentPadding = PaddingValues(1.dp),
+                            shape = CircleShape
+                        )
+
+
+                        {
+                            Icon(
+                                modifier = Modifier.size(12.dp),
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Delete Instruction"
+                            )
+                        }
+
+                        Button(
+                            onClick = {
+                                editedInstruction.value = index
+                                instruction.value = instructionStep.step
+                            },
+                            modifier = Modifier.size(20.dp),
+                            contentPadding = PaddingValues(1.dp),
+                            shape = CircleShape
+                        )
+                        {
+                            Icon(
+                                modifier = Modifier.size(12.dp),
+                                imageVector = Icons.Filled.Edit,
+                                contentDescription = "Edit Instruction"
+                            )
+                        }
+                    }
+                }
+            }
+            Text("Categories")
+            FlowRow(modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outline).padding(12.dp)) {
+                tagList.forEach { tag ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(checked = selectedTags.contains(tag), onCheckedChange = { isChecked ->
+                            if (isChecked) {
+                                selectedTags.add(tag)
+                            } else {
+                                selectedTags.remove(tag)
+                            }
+                        })
+                        Text(tag.name)
+
+                    }
+                }
+            }
+            Button(onClick = {
+                if (fieldValidation()) {
+                    val convertedServings = servings.value.toIntOrNull()
+                    val convertedTime = totalTime.value.toIntOrNull()
+                    var savedId: String?
+                    //logic to add new recipe
+                    if (recipe == null) {
+                        val recipe = Recipe(
+                            title.value,
+                            convertedServings!!,
+                            description.value,
+                            convertedTime!!,
+                            ingredientList,
+                            instructionList,
+                            selectedTags
+                        )
+                        recLib.addRecipe(recipe)
+                        savedId = recipe.id
+                        recipeSaved.value = true
+                        recipeSaveFailed.value = false
+                        title.value = ""
+                        servings.value = ""
+                        description.value = ""
+                        totalTime.value = ""
+                        ingredientList.clear()
+                        instructionList.clear()
+                        selectedTags.clear()
+                    }
+                    //logic to edit existing recipe
+                    else {
+                        recipe.title = title.value
+                        recipe.description = description.value
+                        recipe.servings = convertedServings!!
+                        recipe.totalTime = convertedTime!!
+                        recipe.ingredients = ingredientList.toMutableList()
+                        recipe.instructions = instructionList.toMutableList()
+                        recipe.tags = selectedTags.toMutableList()
+                        savedId = recipe.id
+                        recipeSaved.value = true
+                        recipeSaveFailed.value = false
+
+                    }
+                    recRepo.saveLibrary()
+                    onRecipeSaved(savedId)
+                } else {
+                    println("Validation failed")
+                    recipeSaveFailed.value = true
+                }
+            })
+            {
+                Text(
+                    if (recipe == null) {
+                        "Add Recipe"
+                    } else {
+                        "Save Changes"
+                    }
+                )
+
 
             }
-        }
-        }
-        Button(onClick = {if (fieldValidation()) {
-            val convertedServings = servings.value.toIntOrNull()
-            val convertedTime = totalTime.value.toIntOrNull()
-            var savedId:String?
-            //logic to add new recipe
-            if(recipe == null){
-                val recipe = Recipe(title.value, convertedServings!!, description.value,  convertedTime!!, ingredientList, instructionList, selectedTags  )
-                recLib.addRecipe(recipe)
-                savedId = recipe.id
-                recipeSaved.value = true
-                recipeSaveFailed.value = false
-                title.value = ""
-                servings.value = ""
-                description.value = ""
-                totalTime.value = ""
-                ingredientList.clear()
-                instructionList.clear()
-                selectedTags.clear()}
-            //logic to edit existing recipe
-            else {
-                recipe.title = title.value
-                recipe.description = description.value
-                recipe.servings = convertedServings!!
-                recipe.totalTime = convertedTime!!
-                recipe.ingredients = ingredientList.toMutableList()
-                recipe.instructions = instructionList.toMutableList()
-                recipe.tags = selectedTags.toMutableList()
-                savedId = recipe.id
-                recipeSaved.value = true
-                recipeSaveFailed.value = false
+            if (recipeSaved.value) {
+                Text("Recipe saved!")
+
 
             }
-            recRepo.saveLibrary()
-            onRecipeSaved(savedId)
-        }
-            else {
-            println("Validation failed")
-            recipeSaveFailed.value = true
-        }})
-        {
-            Text(if(recipe == null){"Add Recipe"}
-            else {"Save Changes"})
 
-
-        }
-        if (recipeSaved.value) {
-            Text("Recipe saved!")
+            if (recipeSaveFailed.value) {
+                Text("Unable to save. Please check that all fields are completed correctly!")
+            }
 
 
         }
 
-        if (recipeSaveFailed.value) {
-            Text("Unable to save. Please check that all fields are completed correctly!")
-        }
-
-
-}
-    Button(onClick = { onNavigate("home")}, modifier=Modifier.padding(16.dp)) {
-        Icon(imageVector = Icons.Filled.Home, contentDescription = "Back to Main Page")
-
-    }}
-
+    }
 
