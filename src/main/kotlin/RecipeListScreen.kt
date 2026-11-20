@@ -91,7 +91,7 @@ fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRep
         }
         item {
             Button(onClick = { onNavigate("home") }) {
-                Text("Back")
+                Text("Home")
 
             }
         }

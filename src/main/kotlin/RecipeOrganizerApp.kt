@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import kotlinx.coroutines.newSingleThreadContext
 import java.text.Normalizer
 
 
@@ -23,7 +24,9 @@ fun RecipeOrganizerApp(recLib: RecipeLibrary, recRepo: RecipeRepository) {
 
    when (currentScreen.value) {
       "home" -> HomeScreen({newScreen: String -> if(newScreen == "addRecipe") {recipeToEdit.value = null}
-                           currentScreen.value = newScreen })
+         if(newScreen == "recipeList") {savedRecipeId.value = null}
+         currentScreen.value = newScreen}
+         )
       "addRecipe" -> AddRecipeScreen({newScreen: String -> currentScreen.value = newScreen}, recLib, recRepo, recipeToEdit.value, onRecipeSaved = {id:String -> savedRecipeId.value = id
       currentScreen.value = "recipeList"})
       "recipeList" -> RecipeListScreen({newScreen: String -> currentScreen.value = newScreen}, recLib, recRepo,  onEditRecipe = {recipe: Recipe -> recipeToEdit.value = recipe; currentScreen.value = "addRecipe"}, savedRecipeId = savedRecipeId.value)
