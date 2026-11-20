@@ -51,15 +51,16 @@ class RecipeLibrary() {
         return filteredList
     }
 
-    //searches for a recipe by tag.  any() stops function once first tag is found, preventing dupes
-    fun searchByTag(searchTag: String): List<Recipe> {
+    //searches for a recipe by tags
+    fun searchByTag(searchList: List<Tag>): List<Recipe> {
         val filteredList = mutableListOf<Recipe>()
         for (recipe in list) {
-            if (recipe.tags.any {tag -> tag.name.equals(searchTag, ignoreCase = true)}) {
-                filteredList.add(recipe)
-                }
+            if (searchList.all
+                {selectedTag ->  recipe.tags.any{individualTag -> individualTag.name.equals(selectedTag.name, ignoreCase = true)}}) {
+            filteredList.add(recipe)
+                }}
 
-            }
+
         return filteredList
 
     }
