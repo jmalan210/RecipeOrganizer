@@ -3,6 +3,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,15 +24,15 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
 
         Text("A place to keep your recipes!")
 
-        Button(onClick = {onNavigate("addRecipe")}) {
+        Button(onClick = {onNavigate("addRecipe")}, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(4.dp)) {
             Text("Add Recipe")
 
         }
-        Button(onClick ={onNavigate("recipeList")}) {
+        Button(onClick ={onNavigate("recipeList")}, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(4.dp)) {
             Text("All Recipes")
 
         }
-        Button(onClick ={onNavigate("search")}) {
+        Button(onClick ={onNavigate("search")}, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(4.dp)) {
             Text("Search")
 
         }

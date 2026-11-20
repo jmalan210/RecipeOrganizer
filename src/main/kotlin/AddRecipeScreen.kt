@@ -2,6 +2,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -21,9 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Add
 
 
 
@@ -121,32 +130,39 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Add Recipe Screen")
+        Text(if (recipe == null) {"Add a New Recipe"} else {"Edit Recipe"}, style = MaterialTheme.typography.headlineLarge)
+
         OutlinedTextField(
             title.value,
             onValueChange = { newTitle -> title.value = newTitle },
             label = { Text("Title") },
-             singleLine = true)
+             singleLine = true,
+            modifier = Modifier.fillMaxWidth())
 
         OutlinedTextField(
             description.value,
             onValueChange = { newDescription -> description.value = newDescription },
             label = { Text("Description") },
-            maxLines = 5
+            maxLines = 5,
+            modifier = Modifier.fillMaxWidth()
         )
-        OutlinedTextField(
-            servings.value,
-            onValueChange = { newServings -> servings.value = newServings },
-            label = { Text("Servings") },
-            singleLine = true)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                servings.value,
+                onValueChange = { newServings -> servings.value = newServings },
+                label = { Text("Servings") },
+                singleLine = true
+            )
 
-        Text(errorMessage.value)
+            Text(errorMessage.value)
 
-        OutlinedTextField(
-            totalTime.value,
-            onValueChange = { newTotalTime -> totalTime.value = newTotalTime },
-            label = { Text("Total Time (minutes)") },
-            singleLine = true)
+            OutlinedTextField(
+                totalTime.value,
+                onValueChange = { newTotalTime -> totalTime.value = newTotalTime },
+                label = { Text("Total Time (minutes)") },
+                singleLine = true
+            )
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically){
 
 
@@ -202,32 +218,36 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                     ingredientQuantity.value = ""
                     ingredientUnit.value = null
                 }
-            }) {
-                Text("+")
+            },
+                modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp)) {
+                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Ingredient")
             }
         }
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+
             ingredientList.forEachIndexed { index, ingredient ->
+                Row(modifier=Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text("${ingredient.quantity} ${ingredient.unit} ${ingredient.name}")
-                Button(onClick = { ingredientList.remove(ingredient) }) {
-                    Text("x")
-                }
-                Button(onClick = {
-                    editedIngredient.value = index
-                    ingredientName.value = ingredient.name
-                    ingredientUnit.value = ingredient.unit
-                    ingredientQuantity.value = ingredient.quantity.toString()
-                }) {
-                    Text("edit")
-                }
+                    Row {
+                        Button(onClick = { ingredientList.remove(ingredient) }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(0.dp)) {
+                            Icon(imageVector = Icons.Filled.Close, contentDescription = "Delete Ingredient")
+                        }
+                        Button(onClick = {
+                            editedIngredient.value = index
+                            ingredientName.value = ingredient.name
+                            ingredientUnit.value = ingredient.unit
+                            ingredientQuantity.value = ingredient.quantity.toString()
+                        }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp)) {
+                           Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Ingredient")
+                        }
+                    }
             }
         }
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 instruction.value,
                 onValueChange = { newInstruction -> instruction.value = newInstruction },
-                label = { Text("Instructions") },
+                label = { Text("Instructions (can add multiple steps)") },
                 maxLines = 5,
                 modifier = Modifier.weight(5.0F)
             )
@@ -240,12 +260,12 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                     editedInstruction.value = null
                     instruction.value = ""
                 }
-            }
+            }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(0.dp)
             ) {
-                Text("Add Step")
+               Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Instruction")
             }
         }
-            Row (verticalAlignment = Alignment.CenterVertically){
+            Row (horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 instructionList.forEachIndexed { index, instructionStep ->
                     Text("${index + 1}. ${instructionStep.step}")
                     Button(onClick = {
@@ -254,18 +274,19 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                             instruction.value = ""
                         }
                         instructionList.remove(instructionStep)
-                    })
+                    }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp))
 
 
-                    { Text("x") }
+                    { Icon(imageVector = Icons.Filled.Close, contentDescription = "Delete Instruction") }
 
                     Button(onClick = {
                         editedInstruction.value = index
                         instruction.value = instructionStep.step
-                    }) { Text("edit") }
+                    }, modifier=Modifier.height(25.dp), contentPadding = PaddingValues(1.dp)) { Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Instruction") }
                 }
             }
-        FlowRow {
+        Text("Categories")
+        FlowRow(modifier= Modifier.border(1.dp, MaterialTheme.colorScheme.outline).padding(12.dp)) {
         tagList.forEach {tag ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = selectedTags.contains(tag), onCheckedChange = {isChecked -> if(isChecked) {selectedTags.add(tag)}
@@ -332,8 +353,8 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
 
 
 }
-    Button(onClick = { onNavigate("home") }) {
-        Text("Home")
+    Button(onClick = { onNavigate("home")}, modifier=Modifier.padding(16.dp)) {
+        Icon(imageVector = Icons.Filled.Home, contentDescription = "Back to Main Page")
 
     }}
 
