@@ -57,22 +57,7 @@ fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRep
             val recipeValue = selectedRecipe.value
             if (recipeValue != null && recipe.id == recipeValue.id) {
                 Card {
-                    Text(recipeValue.description)
-
-                    Text("Servings: ${recipeValue.servings.toString()}", fontWeight = FontWeight.Bold)
-                    Text("Total time: ${recipeValue.totalTime.toString()}", fontWeight = FontWeight.Bold)
-                    Text("Ingredients:", fontWeight = FontWeight.Bold)
-                    recipeValue.ingredients.forEach { ingredient ->
-                        Text("${ingredient.quantity} ${ingredient.unit ?: ""} ${ingredient.name}")
-                    }
-                    Text("Instructions:", fontWeight = FontWeight.Bold)
-                    recipeValue.instructions.forEach { instruction ->
-                        Text(instruction.step)
-                    }
-                    Text("Tags:", fontWeight = FontWeight.Bold)
-                    recipeValue.tags.forEach { tag ->
-                        Text(tag.name)
-                    }
+                    RecipeDetails(recipeValue)
 
                     Button(onClick = {
 

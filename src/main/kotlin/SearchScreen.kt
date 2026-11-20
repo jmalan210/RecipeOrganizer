@@ -1,3 +1,4 @@
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -31,6 +32,8 @@ fun SearchScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary) {
     val searchOptions :List<String> = listOf("Title", "Ingredient", "Tag")
     val selectedSearchTags = remember{mutableStateListOf<Tag>()}
     val searchResults = remember{mutableStateListOf<Recipe>()}
+    val selectedRecipe = remember{mutableStateOf<Recipe?>(null)}
+
     Text("Search Screen")
     Column(
         modifier = Modifier.padding(16.dp).fillMaxWidth(),
@@ -48,7 +51,8 @@ fun SearchScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary) {
                 searchOptions.forEach { option ->
                     DropdownMenuItem(text = { Text(option)},
                         onClick = {searchType.value = option
-                        searchDropdownExpanded.value = false})
+                        searchDropdownExpanded.value = false
+                        searchResults.clear()})
                 }
             }
 
@@ -78,17 +82,30 @@ fun SearchScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary) {
             }
 
         Button(onClick = {searchResults.clear()
+            selectedRecipe.value = null
             when(searchType.value) {
-                "Title" -> {searchResults.addAll(recLib.searchByTitle(searchQuery.value.lowercase().trim()))}
-                "Ingredient" -> {searchResults.addAll(recLib.searchByIngredient(searchQuery.value.lowercase().trim()))}
-                "Tag" -> {searchResults.addAll(recLib.searchByTag(selectedSearchTags))}
+                "Title" -> {if (searchQuery.value.trim().isNotEmpty()){searchResults.addAll(recLib.searchByTitle(searchQuery.value.lowercase().trim()))}}
+                "Ingredient" -> {if (searchQuery.value.trim().isNotEmpty())searchResults.addAll(recLib.searchByIngredient(searchQuery.value.lowercase().trim()))}
+                "Tag" -> {if (selectedSearchTags.isNotEmpty()){searchResults.addAll(recLib.searchByTag(selectedSearchTags))}}
 
             }}) {
             Text("Search")
         }
 
+        searchResults.forEach { recipe ->
+            Text(recipe.title, modifier = Modifier.clickable{
+            if (selectedRecipe.value?.id == recipe.id) {selectedRecipe.value = null}
+            else {selectedRecipe.value = recipe}})
+            val clickedRecipe = selectedRecipe.value
+            if(clickedRecipe != null && clickedRecipe.id == recipe.id) {
+                RecipeDetails(clickedRecipe)
+
+                    }
+            }
+        }
+
+
         Button(onClick = { onNavigate("home") }) {
             Text("Home")
         }
     }
-}
