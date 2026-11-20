@@ -32,8 +32,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, recipe: Recipe? = null, onRecipeSaved: (String) -> Unit) {
     val title = remember(recipe?.id) { mutableStateOf(recipe?.title?:"") }
     val description = remember(recipe?.id) { mutableStateOf(recipe?.description?:"") }
-    val servings = remember(recipe?.id) { mutableStateOf(recipe?.servings.toString()?:"") }
-    val totalTime = remember(recipe?.id) { mutableStateOf(recipe?.totalTime.toString()?:"") }
+    val servings = remember(recipe?.id) { mutableStateOf(recipe?.servings?.toString()?:"") }
+    val totalTime = remember(recipe?.id) { mutableStateOf(recipe?.totalTime?.toString()?:"") }
     val ingredientName = remember { mutableStateOf("") }
     val ingredientQuantity = remember { mutableStateOf("") }
     val ingredientUnit = remember { mutableStateOf<String?>(null) }
@@ -61,12 +61,12 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         "Box",
         "Package"
     ).sorted()
-    val ingredientList = remember(recipe?.id){mutableStateListOf<Ingredient>(*(recipe?.ingredients?.toTypedArray()?: emptyArray<Ingredient>()))} //*spread operator expands array into individual arguments
+    val ingredientList = remember(recipe?.id){mutableStateListOf(*(recipe?.ingredients?.toTypedArray()?: emptyArray<Ingredient>()))} //*spread operator expands array into individual arguments
     val editedIngredient = remember{mutableStateOf<Int?>(null)}
     val instruction = remember{mutableStateOf("")}
-    val instructionList = remember(recipe?.id){mutableStateListOf<Instruction>(*(recipe?.instructions?.toTypedArray()?:emptyArray<Instruction>()))}
+    val instructionList = remember(recipe?.id){mutableStateListOf(*(recipe?.instructions?.toTypedArray()?:emptyArray<Instruction>()))}
     val editedInstruction = remember{mutableStateOf<Int?>(null)}
-    val selectedTags: SnapshotStateList<Tag> = remember(recipe?.id){mutableStateListOf<Tag>(*(recipe?.tags?.toTypedArray()?:emptyArray<Tag>()))}
+    val selectedTags: SnapshotStateList<Tag> = remember(recipe?.id){mutableStateListOf(*(recipe?.tags?.toTypedArray()?:emptyArray<Tag>()))}
     val errorMessage = remember{mutableStateOf("")}
     val recipeSaved = remember{mutableStateOf(false)}
     val recipeSaveFailed = remember{mutableStateOf(false)}
@@ -265,7 +265,7 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                     }) { Text("edit") }
                 }
             }
-        FlowRow() {
+        FlowRow {
         tagList.forEach {tag ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = selectedTags.contains(tag), onCheckedChange = {isChecked -> if(isChecked) {selectedTags.add(tag)}
@@ -278,7 +278,7 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         Button(onClick = {if (fieldValidation()) {
             val convertedServings = servings.value.toIntOrNull()
             val convertedTime = totalTime.value.toIntOrNull()
-            var savedId:String? = null
+            var savedId:String?
             //logic to add new recipe
             if(recipe == null){
                 val recipe = Recipe(title.value, convertedServings!!, description.value,  convertedTime!!, ingredientList, instructionList, selectedTags  )

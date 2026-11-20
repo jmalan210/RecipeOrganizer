@@ -1,13 +1,10 @@
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
@@ -24,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, onEditRecipe: (Recipe) -> Unit, savedRecipeId: String? = null) {
 
     val recipeList = recLib.returnAllRecipes().sortedBy{recipe-> recipe.title.lowercase()}
-    val selectedRecipe: MutableState<Recipe?> = remember(savedRecipeId) { mutableStateOf<Recipe?>(savedRecipeId?.let{recLib.findRecipeById(it)}) }
+    val selectedRecipe: MutableState<Recipe?> = remember(savedRecipeId) { mutableStateOf(savedRecipeId?.let{recLib.findRecipeById(it)}) }
     val listState = rememberLazyListState()
     val savedRecipeIndex= recipeList.indexOfFirst{it.id ==savedRecipeId}
     LaunchedEffect(savedRecipeId) {

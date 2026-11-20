@@ -22,11 +22,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 
-val searchOptions :List<String> = listOf("Title", "Ingredient", "Tag")
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun SearchScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary) {
-    val searchType = remember{ mutableStateOf<String>("Title") }
+    val searchType = remember{ mutableStateOf("Title") }
     val searchDropdownExpanded = remember{mutableStateOf(false)}
     val searchQuery = remember{mutableStateOf("")}
     val searchOptions :List<String> = listOf("Title", "Ingredient", "Tag")

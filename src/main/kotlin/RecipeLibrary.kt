@@ -1,7 +1,7 @@
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
-class RecipeLibrary() {
+class RecipeLibrary {
 
     private var list: SnapshotStateList<Recipe> = mutableStateListOf()
 

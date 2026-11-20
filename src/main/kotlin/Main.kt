@@ -61,7 +61,7 @@ fun main() {
 //    chocChipCookies.addTag(Tag("Desserts"))
 //    chocChipCookies.addTag(Tag("Chocolate"))
 //
-////    chocChipCookies.removeTag("deSserts")
+////    chocChipCookies.removeTag("desserts")
 //
 ////    for (tag in chocChipCookies.tags) {
 ////        println(tag.name)

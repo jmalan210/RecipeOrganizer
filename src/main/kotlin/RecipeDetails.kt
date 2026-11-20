@@ -1,13 +1,20 @@
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.withStyle
 
 @Composable
 fun RecipeDetails(recipe: Recipe) {
     Text(recipe.description)
 
-    Text("Servings: ${recipe.servings.toString()}", fontWeight = FontWeight.Bold)
-    Text("Total time: ${recipe.totalTime.toString()}", fontWeight = FontWeight.Bold)
+    Text(buildAnnotatedString { withStyle(SpanStyle(fontWeight = FontWeight.Bold)){append("Servings: ")}
+        append(recipe.servings.toString())
+        })
+    Text(buildAnnotatedString {withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Total Time: ") }
+            append(recipe.convertTotalTime())
+        })
     Text("Ingredients:", fontWeight = FontWeight.Bold)
     recipe.ingredients.forEach { ingredient ->
         Text("${ingredient.quantity} ${if (ingredient.unit == "None" || ingredient.unit == null){""} else (ingredient.unit + " ")}${ingredient.name}")
