@@ -35,10 +35,7 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
             Text("Search")
 
         }
-        Button(onClick ={onNavigate("manageTags")}) {
-            Text("Manage Tags")
 
-        }
     }
 
 

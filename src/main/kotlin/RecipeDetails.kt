@@ -10,7 +10,7 @@ fun RecipeDetails(recipe: Recipe) {
     Text("Total time: ${recipe.totalTime.toString()}", fontWeight = FontWeight.Bold)
     Text("Ingredients:", fontWeight = FontWeight.Bold)
     recipe.ingredients.forEach { ingredient ->
-        Text("${ingredient.quantity} ${ingredient.unit ?: ""} ${ingredient.name}")
+        Text("${ingredient.quantity} ${if (ingredient.unit == "None" || ingredient.unit == null){""} else (ingredient.unit + " ")}${ingredient.name}")
     }
     Text("Instructions:", fontWeight = FontWeight.Bold)
     recipe.instructions.forEach { instruction ->

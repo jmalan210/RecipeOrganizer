@@ -31,7 +31,6 @@ fun RecipeOrganizerApp(recLib: RecipeLibrary, recRepo: RecipeRepository) {
       currentScreen.value = "recipeList"})
       "recipeList" -> RecipeListScreen({newScreen: String -> currentScreen.value = newScreen}, recLib, recRepo,  onEditRecipe = {recipe: Recipe -> recipeToEdit.value = recipe; currentScreen.value = "addRecipe"}, savedRecipeId = savedRecipeId.value)
       "search" -> SearchScreen({newScreen: String -> currentScreen.value = newScreen}, recLib)
-      "manageTags" -> ManageTagsScreen({newScreen: String -> currentScreen.value = newScreen})
       else -> HomeScreen({newScreen: String -> currentScreen.value = newScreen})
    }
 
