@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
 
-
+//the "brains" of the GUI. All navigation is routed through this function.
 @Composable
 fun RecipeOrganizerApp(recLib: RecipeLibrary, recRepo: RecipeRepository) {
    val currentScreen = remember{mutableStateOf("home")}

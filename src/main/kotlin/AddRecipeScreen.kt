@@ -36,7 +36,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.size
 
 
-
+//Handles the screen to add and edit a recipe
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, recipe: Recipe? = null, onRecipeSaved: (String) -> Unit) {

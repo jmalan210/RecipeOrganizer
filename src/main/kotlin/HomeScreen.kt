@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Button
 
 
-
+//the home screen of the app.  Has 3 buttons to navigate to other parts of the app: add/edit recipe screen, all recipes screen, search screen.
 @Composable
 fun HomeScreen(onNavigate: (String) -> Unit) {
 

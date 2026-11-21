@@ -30,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 
+//manages the Recipe List screen.  Displays all recipes in alphabetical order.  User can click individual recipe cards to open and close.
 @Composable
 fun RecipeListScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, onEditRecipe: (Recipe) -> Unit, savedRecipeId: String? = null) {
 

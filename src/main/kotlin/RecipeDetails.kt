@@ -5,6 +5,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.withStyle
 
+//a function to display all the recipe information. Put in a central location because it is used more than once.
 @Composable
 fun RecipeDetails(recipe: Recipe) {
     Text(recipe.description)

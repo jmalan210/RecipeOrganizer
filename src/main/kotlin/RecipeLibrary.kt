@@ -51,7 +51,7 @@ class RecipeLibrary {
         return filteredList
     }
 
-    //searches for a recipe by tags
+    //searches for a recipe by tags.  Allows search for one tag or multiple tags. Logic to avoid returning all recipes in case of no tags.
     fun searchByTag(searchList: List<Tag>): List<Recipe> {
         val filteredList = mutableListOf<Recipe>()
         for (recipe in list) {
@@ -64,7 +64,7 @@ class RecipeLibrary {
         return filteredList
 
     }
-
+    //allows the user to search for a recipe by ingredient
     fun searchByIngredient(searchIngredient: String): List<Recipe> {
         val filteredList = mutableListOf<Recipe>()
         for (recipe in list) {

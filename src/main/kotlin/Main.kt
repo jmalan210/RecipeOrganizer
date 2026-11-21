@@ -1,7 +1,7 @@
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.Window
 
-
+//main function instantiates the library and populates it with the repository that was saved to the .jsaon file (if it exists) and launches the application with those two things
 fun main() {
     val jensLib = RecipeLibrary()
     val jensRepo = RecipeRepository(jensLib)

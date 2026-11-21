@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
+//searchScreen handles all searchs in the library by title, ingredient, or tag, and return a clickable list to the user.
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun SearchScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary) {
