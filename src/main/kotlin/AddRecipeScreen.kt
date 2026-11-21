@@ -35,16 +35,16 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.size
-import androidx.compose.ui.zIndex
+
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRepo: RecipeRepository, recipe: Recipe? = null, onRecipeSaved: (String) -> Unit) {
-    val title = remember(recipe?.id) { mutableStateOf(recipe?.title?:"") }
-    val description = remember(recipe?.id) { mutableStateOf(recipe?.description?:"") }
-    val servings = remember(recipe?.id) { mutableStateOf(recipe?.servings?.toString()?:"") }
-    val totalTime = remember(recipe?.id) { mutableStateOf(recipe?.totalTime?.toString()?:"") }
+    val title = remember(recipe?.id) { mutableStateOf(recipe?.title ?: "") }
+    val description = remember(recipe?.id) { mutableStateOf(recipe?.description ?: "") }
+    val servings = remember(recipe?.id) { mutableStateOf(recipe?.servings?.toString() ?: "") }
+    val totalTime = remember(recipe?.id) { mutableStateOf(recipe?.totalTime?.toString() ?: "") }
     val ingredientName = remember { mutableStateOf("") }
     val ingredientQuantity = remember { mutableStateOf("") }
     val ingredientUnit = remember { mutableStateOf<String?>(null) }
@@ -72,15 +72,24 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
         "Box",
         "Package"
     ).sorted()
-    val ingredientList = remember(recipe?.id){mutableStateListOf(*(recipe?.ingredients?.toTypedArray()?: emptyArray<Ingredient>()))} //*spread operator expands array into individual arguments
-    val editedIngredient = remember{mutableStateOf<Int?>(null)}
-    val instruction = remember{mutableStateOf("")}
-    val instructionList = remember(recipe?.id){mutableStateListOf(*(recipe?.instructions?.toTypedArray()?:emptyArray<Instruction>()))}
-    val editedInstruction = remember{mutableStateOf<Int?>(null)}
-    val selectedTags: SnapshotStateList<Tag> = remember(recipe?.id){mutableStateListOf(*(recipe?.tags?.toTypedArray()?:emptyArray<Tag>()))}
-    val errorMessage = remember{mutableStateOf("")}
-    val recipeSaved = remember{mutableStateOf(false)}
-    val recipeSaveFailed = remember{mutableStateOf(false)}
+    val ingredientList = remember(recipe?.id) {
+        mutableStateListOf(
+            *(recipe?.ingredients?.toTypedArray() ?: emptyArray<Ingredient>())
+        )
+    } //*spread operator expands array into individual arguments
+    val editedIngredient = remember { mutableStateOf<Int?>(null) }
+    val instruction = remember { mutableStateOf("") }
+    val instructionList = remember(recipe?.id) {
+        mutableStateListOf(
+            *(recipe?.instructions?.toTypedArray() ?: emptyArray<Instruction>())
+        )
+    }
+    val editedInstruction = remember { mutableStateOf<Int?>(null) }
+    val selectedTags: SnapshotStateList<Tag> =
+        remember(recipe?.id) { mutableStateListOf(*(recipe?.tags?.toTypedArray() ?: emptyArray<Tag>())) }
+    val errorMessage = remember { mutableStateOf("") }
+    val recipeSaved = remember { mutableStateOf(false) }
+    val recipeSaveFailed = remember { mutableStateOf(false) }
 
 
     //adds an ingredient to ingredientList and resets field values to empty
@@ -108,30 +117,35 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
     fun fieldValidation(): Boolean {
         val convertedServings = servings.value.toIntOrNull()
         val convertedTime = totalTime.value.toIntOrNull()
-        if(title.value.isBlank()) {
+        if (title.value.isBlank()) {
             return false
         }
-        if(convertedServings == null || convertedServings <= 0){
+        if (convertedServings == null || convertedServings <= 0) {
             return false
         }
-        if(convertedTime == null || convertedTime <= 0) {
+        if (convertedTime == null || convertedTime <= 0) {
             return false
         }
-        if(ingredientList.isEmpty()) {
+        if (ingredientList.isEmpty()) {
             return false
         }
-        if(instructionList.isEmpty()) {
+        if (instructionList.isEmpty()) {
             return false
         }
         return true
     }
 
-    Box {
 
-        Button(onClick = { onNavigate("home")}, modifier=Modifier.padding(16.dp).align(Alignment.TopStart).zIndex(1f)) {
-            Icon(imageVector = Icons.Filled.Home, contentDescription = "Back to Main Page")
+        Column {
+            Button(
+                onClick = { println("home clicked")
+                    onNavigate("home") },
+                modifier = Modifier.padding(16.dp).align(Alignment.Start)
+            ) {
+                Icon(imageVector = Icons.Filled.Home, contentDescription = "Back to Main Page")
 
-        }}
+            }
+
         Column(
             modifier = Modifier.padding(16.dp).fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -261,7 +275,13 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("${ingredient.quantity} ${ingredient.unit} ${ingredient.name}")
+                    Text(
+                        "${ingredient.quantity} ${
+                            if (ingredient.unit == "None" || ingredient.unit == null) {
+                                ""
+                            } else (ingredient.unit + " ")
+                        }${ingredient.name}"
+                    )
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Button(
                             onClick = { ingredientList.remove(ingredient) },
@@ -457,5 +477,5 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
 
         }
 
-    }
+    }}
 

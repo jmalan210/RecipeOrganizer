@@ -5,10 +5,15 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Text
+import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,9 +23,13 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,12 +42,21 @@ fun SearchScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary) {
     val searchResults = remember{mutableStateListOf<Recipe>()}
     val selectedRecipe = remember{mutableStateOf<Recipe?>(null)}
 
-    Text("Search Screen")
+    Column {
+        Button(
+            onClick = { onNavigate("home") },
+            modifier = Modifier.padding(16.dp).align(Alignment.Start)
+        ) {
+            Icon(imageVector = Icons.Filled.Home, contentDescription = "Back to Main Page")
+
+        }
+
     Column(
-        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        modifier = Modifier.padding(16.dp).fillMaxWidth().verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp),
 
     ) {
+        Text("Search Recipes", Modifier.fillMaxWidth(),style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center )
         ExposedDropdownMenuBox( expanded = searchDropdownExpanded.value,
             onExpandedChange = { newSearchDropdownExpanded ->
                 searchDropdownExpanded.value = newSearchDropdownExpanded}){
@@ -92,19 +110,22 @@ fun SearchScreen(onNavigate: (String) -> Unit, recLib: RecipeLibrary) {
         }
 
         searchResults.forEach { recipe ->
-            Text(recipe.title, modifier = Modifier.clickable{
-            if (selectedRecipe.value?.id == recipe.id) {selectedRecipe.value = null}
-            else {selectedRecipe.value = recipe}})
+            Card(Modifier.fillMaxWidth().padding(10.dp).clickable{
+                if (selectedRecipe.value?.id == recipe.id) {selectedRecipe.value = null}
+                else {selectedRecipe.value = recipe}}){ Text(recipe.title, modifier = Modifier.padding(10.dp), fontWeight = FontWeight.Bold)}
+
             val clickedRecipe = selectedRecipe.value
             if(clickedRecipe != null && clickedRecipe.id == recipe.id) {
-                RecipeDetails(clickedRecipe)
-
+                println("Displaying recipe details")
+                Card{
+                    Column(Modifier.padding(16.dp)) {
+                        RecipeDetails(clickedRecipe)
+                    }
+                }
                     }
             }
         }
 
 
-        Button(onClick = { onNavigate("home") }) {
-            Text("Home")
-        }
-    }
+
+    }}
