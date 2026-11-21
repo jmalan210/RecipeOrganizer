@@ -26,7 +26,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -416,9 +415,9 @@ fun AddRecipeScreen(onNavigate: (String ) -> Unit, recLib: RecipeLibrary, recRep
                             convertedServings!!,
                             description.value,
                             convertedTime!!,
-                            ingredientList,
-                            instructionList,
-                            selectedTags
+                            ingredientList.toMutableList(),
+                            instructionList.toMutableList(),
+                            selectedTags.toMutableList()
                         )
                         recLib.addRecipe(recipe)
                         savedId = recipe.id
