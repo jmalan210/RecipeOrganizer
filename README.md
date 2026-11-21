@@ -1,21 +1,21 @@
 # Overview
 
-{Important! Do not say in this section that this is college assignment. Talk about what you are trying to accomplish as a software engineer to further your learning.}
+This was an exercise in learning Kotlin. I also used Gradle to handle writing to and reading from files, and I used Jetpack Compose to connect my program to a simple Graphic User Interface.
 
-{Provide a description of the software that you wrote to demonstrate the Kotlin language.}
+This is a basic recipe organizer that allows the user to add, edit, delete, and store recipes in a library.
 
-{Describe your purpose for writing this software.}
+I wrote this software to learn about Kotlin and to learn to write something useful.
 
-{Provide a link to your YouTube demonstration. It should be a 4-5 minute demo of the software running and a walkthrough of the code. Focus should be on sharing what you learned about the language syntax.}
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/sCY6E_Bvb_A)
 
 # Development Environment
 
-Adoptium Eclipse Temurin jdk-25.0.5+8, Windows (x64)
-JetBrains IntelliJ IDEA
+- Adoptium Eclipse Temurin jdk-25.0.5+8, Windows (x64)
+- JetBrains IntelliJ IDEA
+- Gradle
+- Jetpack Compose
 
-{Describe the programming language that you used and any libraries.}
 
 # Useful Websites
 
@@ -31,5 +31,5 @@ JetBrains IntelliJ IDEA
 
 
 - Connecting to a database and adding logic to delete individual recipes instead of overwriting the entire JSON file each time I save.
-- Item 2
-- Item 3
+- Better handling of fractional quantities in the recipe entry.
+- Alphabetical grouping or pagination for the complete recipe library for ease of use. 
